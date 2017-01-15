@@ -1,13 +1,14 @@
 <?php
 //this init file will be included on every page we create as 'require_once('core/init.php')'
 session_start(); //required to set sessions (login)
-require_once(/includes/mysql_setting.php) //this is simply to keep password out of git
+//db password is stored outside of project this file contains variable $PASSWORD
+require_once(../../settings/mysql_setting.php) //two levels up
 
 //set global config array of settings used by config class_alias
 $GLOBALS['config'] = array( //storage area
   'mysql' => array(
     'host'=>'127.0.0.1', //if used localhost, must do DNS lookup
-    'username'=>'root',
+    'username'=>'php_oop_db',
     'password'=>$PASSWORD, //note that his variable is set outside git repo
     'db'=>'youtube'
   ),//mysql settings array
