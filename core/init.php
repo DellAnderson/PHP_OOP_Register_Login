@@ -2,7 +2,7 @@
 //this init file will be included on every page we create as 'require_once('core/init.php')'
 session_start(); //required to set sessions (login)
 //db password is stored outside of project this file contains variable $PASSWORD
-require_once(../../settings/mysql_setting.php) //two levels up
+require_once '../settings/mysql_setting.php'; //ONE levels up from index.php (not init.php)
 
 //set global config array of settings used by config class_alias
 $GLOBALS['config'] = array( //storage area
@@ -22,8 +22,8 @@ $GLOBALS['config'] = array( //storage area
 );
 
 //autoload classes as required
-spl_autoload_register(functoin($class){
-  require_once 'classes/' . $ class . '.php';
+spl_autoload_register(function($class){
+  require_once 'classes/' . $class . '.php';
 });//pass in anonymous function that is run every time accessed
 
 require_once 'functions/sanitize.php'; //can't autoload because not class
