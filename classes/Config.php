@@ -5,8 +5,8 @@
 class config {
   public static function get($path = null){
     if($path){
-      $config = $GLOBALS['config']; //$GLOBALS is from init.php
       $path = explode('/', $path); //explode path to array divide by character
+      $config = $GLOBALS['config']; //$GLOBALS is from init.php
       //print_r($path);
       //traverse our way trhu the array
       foreach($path as $element){
@@ -14,8 +14,12 @@ class config {
         if(isset($config[$element])){
           //echo 'Set',' '; //debug only
           $config = $config[$element];
+        } elseif(!isset($config[$element])){ //my code: may return false instead of string
+          //return 'Error: invalid configuration parameter path.';
+          return false;
         }
       }
+
       return $config; //TODO check for invalid path before return
 
     }
