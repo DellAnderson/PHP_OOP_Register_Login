@@ -6,17 +6,17 @@ require_once 'core/init.php';
 //$db = new DB(); //won't work for singleton pattern
 
 //DB::getInstanceDB(); //create a single database connection
-$user = DB::getInstanceDB()->query("SELECT username FROM users WHERE username = ? or username = ?", array(
+$user = DB::getInstanceDB()->makeQuery("SELECT username FROM users WHERE username = ? or username = ?", array(
   "billy",
   "bob")
 );
 
-//$user = DB::getInstanceDB()->query("SELECT username FROM users");
+$user = DB::getInstanceDB()->makeQuery("SELECT username FROM users");
 
-echo "Were here!<br>";
+//echo "Were here!<br>"; //debug
 
-if($user->error() == true){
-  echo 'Query generated an error. Please check query syntax & spelling.';
-} else{
-  echo 'ΟΚ!';
-}
+// if($user->error() == true){
+//   echo 'Query generated an error. Please check query syntax & spelling.<br>';
+// } else{
+//   echo 'ΟΚ!<br>';
+// }

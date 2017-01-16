@@ -43,7 +43,7 @@ class DB{
  * @param  array  $params = array of values to be bound to the query
  * @return [type]         [description]
  */
-  public function query($sql, $params = array()){
+  public function makeQuery($sql, $params = array()){
     $this->error = false; //reset false so don't return error from previous query
     //assign & check query prep
     if($this->query = $this->pdo->prepare($sql)){
@@ -67,7 +67,7 @@ class DB{
         echo "we've executed!<br>";  //debug
         $this->results = $this->query->fetchAll(PDO::FETCH_OBJ);
         $this->count = $this->query->rowCount();//PDO method
-        echo "Success";//query has been executed successfully by PDO
+        echo "Success<br><br>";//debug: query has been executed successfully by PDO
       } else {
         $this->error = true;
       }
