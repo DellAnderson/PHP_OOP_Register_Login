@@ -47,23 +47,17 @@ class DB{
     $this->error = false; //reset false so don't return error from previous query
     //check query prep preparation & assign to query property
     if($this->query = $this->pdo->prepare($sql)){
-      //echo "Successful preparation in makeQuery()<br>"; //verifies prepared properly //debug
-      //var_dump($sql); //debug
-      //echo "<br>"; //debug
       $x = 1;//counter
       if(count($params)){ //if there are parameters
         foreach($params as $param){
           //assign array values to question marks (in order)
           //binding parameters reduces possibility of SQL injection
           //is native to PDO, just abstracted a bit here (TODO change?)
-          //echo "(In Foreach loop: ";
           $this->query->bindValue($x, $param); //bind by position(x), value
-          //echo " ". $x . ", " . $param .")<br>"; //debug
           $x++;
         }
       }
-      //var_dump($this->query); //debug
-      //echo "<br>"; //debug
+
       //execute query with or without parameters
       if($this->query->execute()){
         //echo "we've executed!<br>";  //debug
@@ -79,14 +73,6 @@ class DB{
 
 //optional method to make queries easier (helper method?)
   private function action($action, $table, $where = array()){
-  //  var_dump($where);
-    //echo "Here are the inputs:<br>";
-    //echo $action ."<br>";
-    //echo $table . "<br>";
-    //print_r($where);
-    //echo "<br>";
-    //echo "<br>";
-
     if(count($where) === 3){//must have 3 operators
       $field    = $where[0];
       $operator = $where[1];
@@ -94,27 +80,13 @@ class DB{
       //https://dev.mysql.com/doc/refman/5.5/en/comparison-operators.html
       //list valid operators - can expand later to items from
       $valid_operators = array('=', '>', '<', '>=', '<=');
-      //var_dump($valid_operators);
-      //check if operator is inside the operators array
-      //echo $field    . "<br>";
-      //echo $operator . "<br>";
-      //echo $value    . "<br>";
-      //echo "<br>";
-      //echo "<br>";
-
-      //echo (in_array($operator,$valid_operators)) ."<br>";
 
       if(in_array($operator, $valid_operators)){
-        //echo "We got this far<br>"; //debug
-        //echo "Truth<br>";
-        //echo "<br>";
+
         //TODO check action validity
         //question mark allows us to bind value (?)
         $sql = "{$action} FROM {$table} WHERE {$field}{$operator} ?";
-        //echo $sql . "<br><br>"; //debug
         if(!$this->makeQuery($sql, array($value))->getError()){
-          //echo "Make query of sql passed without errors! <br>";
-          //echo "<br>";
           return $this; //if no error, return $this
           //to use with method to return result set
         }
@@ -131,6 +103,13 @@ public function delete($table, $where){
   return $this->action('DELETE', $table, $where);
 }
 
+public function getResults(){
+  return $this->results;
+}
+
+public function getFirst(){
+  return $this->getResults()[0];
+}
   /**
    * somewhat Silly method to return error property (could just make propery public!)
    * @return bool = success or failure of query
