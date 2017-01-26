@@ -47,29 +47,29 @@ class DB{
     $this->error = false; //reset false so don't return error from previous query
     //check query prep preparation & assign to query property
     if($this->query = $this->pdo->prepare($sql)){
-      echo "Successful preparation in makeQuery()<br>"; //verifies prepared properly //debug
+      //echo "Successful preparation in makeQuery()<br>"; //verifies prepared properly //debug
       //var_dump($sql); //debug
-      echo "<br>"; //debug
+      //echo "<br>"; //debug
       $x = 1;//counter
       if(count($params)){ //if there are parameters
         foreach($params as $param){
           //assign array values to question marks (in order)
           //binding parameters reduces possibility of SQL injection
           //is native to PDO, just abstracted a bit here (TODO change?)
-          echo "(In Foreach loop: ";
+          //echo "(In Foreach loop: ";
           $this->query->bindValue($x, $param); //bind by position(x), value
-          echo " ". $x . ", " . $param .")<br>"; //debug
+          //echo " ". $x . ", " . $param .")<br>"; //debug
           $x++;
         }
       }
       //var_dump($this->query); //debug
-      echo "<br>"; //debug
+      //echo "<br>"; //debug
       //execute query with or without parameters
       if($this->query->execute()){
-        echo "we've executed!<br>";  //debug
+        //echo "we've executed!<br>";  //debug
         $this->results = $this->query->fetchAll(PDO::FETCH_OBJ); //return table as OBJ
         $this->count = $this->query->rowCount();//PDO method
-        echo "Success<br><br>";//debug: query has been executed successfully by PDO
+        //echo "Success<br><br>";//debug: query has been executed successfully by PDO
       } else {
         $this->error = true;
       }
@@ -80,12 +80,12 @@ class DB{
 //optional method to make queries easier (helper method?)
   private function action($action, $table, $where = array()){
   //  var_dump($where);
-    echo "Here are the inputs:<br>";
-    echo $action ."<br>";
-    echo $table . "<br>";
-    print_r($where);
-    echo "<br>";
-    echo "<br>";
+    //echo "Here are the inputs:<br>";
+    //echo $action ."<br>";
+    //echo $table . "<br>";
+    //print_r($where);
+    //echo "<br>";
+    //echo "<br>";
 
     if(count($where) === 3){//must have 3 operators
       $field    = $where[0];
@@ -96,25 +96,25 @@ class DB{
       $valid_operators = array('=', '>', '<', '>=', '<=');
       //var_dump($valid_operators);
       //check if operator is inside the operators array
-      echo $field    . "<br>";
-      echo $operator . "<br>";
-      echo $value    . "<br>";
-      echo "<br>";
-      echo "<br>";
+      //echo $field    . "<br>";
+      //echo $operator . "<br>";
+      //echo $value    . "<br>";
+      //echo "<br>";
+      //echo "<br>";
 
       //echo (in_array($operator,$valid_operators)) ."<br>";
 
       if(in_array($operator, $valid_operators)){
-        echo "We got this far<br>";
+        //echo "We got this far<br>"; //debug
         //echo "Truth<br>";
-        echo "<br>";
+        //echo "<br>";
         //TODO check action validity
         //question mark allows us to bind value (?)
         $sql = "{$action} FROM {$table} WHERE {$field}{$operator} ?";
-        echo $sql . "<br><br>";
+        //echo $sql . "<br><br>"; //debug
         if(!$this->makeQuery($sql, array($value))->getError()){
-          echo "Make query of sql passed without errors! <br>";
-          echo "<br>";
+          //echo "Make query of sql passed without errors! <br>";
+          //echo "<br>";
           return $this; //if no error, return $this
           //to use with method to return result set
         }
