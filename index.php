@@ -1,14 +1,19 @@
 <?php
 require_once 'core/init.php';
 
-//$user = DB::getInstanceDB()->get('users', array('username', '=','alex'));
-$user = DB::getInstanceDB()->makeQuery("SELECT * FROM users");
+// $user = DB::getInstanceDB()->get('users', array('username', '=','alex'));
+// $user = DB::getInstanceDB()->makeQuery("SELECT * FROM users");
+// $userInsert = DB::getInstanceDB()->insert('users', array(
+//   'username'=> 'Dale',
+//   'password'=> 'password',
+//   'salt'=> 'salt'
+// ));
 
-if(!$user->getCount()){
-  echo 'Error. Please check query syntax, spelling, and whether table data exists.<br>';
-} else{
-  //echo 'ΟΚ!<br>';  //user must exist to pass this
-  // foreach($user->getResults() as $user){
-  //   echo $user->username, '<br>';
-  echo $user->getFirst()->username;
-  }
+$userUpdate = DB::getInstanceDB()-> update('users', 12, array(
+  'password'=> 'newpassword',
+  'name' => 'Ginger Timber'
+));
+
+// if ($userInsert){
+//   echo 'Data inserted';
+// }

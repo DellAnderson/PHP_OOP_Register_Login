@@ -103,6 +103,52 @@ public function delete($table, $where){
   return $this->action('DELETE', $table, $where);
 }
 
+public function insert($table, $fields = array()){
+  //if(count($fields)){
+    $keys = array_keys($fields);
+    $values = '';
+    $x = 1;
+    foreach($fields as $field){
+      $values .= "?"; //make ?'s for values string creation
+      if($x < count($fields)){
+        $values .= ', '; //add comma if not at end
+      }
+      $x++;
+    }
+    //die($values);
+    //create query with bound question marks with values want to insert
+    $sql = "INSERT INTO users (`" . implode('`, `', $keys). "`) VALUES ({$values})";
+    //echo $sql;
+    //$fields will be bound to previously created question marks
+    //if no error, return true
+    if(!$this->makeQuery($sql, $fields)->getError()){
+      return true; //allows us to check whether data inserted
+    }
+  //} //from if(count...)
+  return false;
+}
+
+public function update($table, $id, $fields = array()){
+  $set = '';
+  $x = 1;
+
+  foreach($fields as $name => $value){
+    $set .= "{$name} = ?";  //bind using ? to avoid SQL injection
+    if($x < count($fields)){
+      $set .= ', ';
+    }
+    $x++;
+  }
+  //die($set);
+  $sql = "UPDATE {$table} SET {$set} WHERE id = {$id}";
+  //die($sql);
+  //perform query
+  if(!$this->makeQuery($sql, $fields)->getError()){
+    return true; //if no error
+  }
+  return false;
+}
+
 public function getResults(){
   return $this->results;
 }
