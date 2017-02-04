@@ -8,6 +8,9 @@
     $validate = new Validate();
     //see also https://youtu.be/rWon2iC-cQ0?list=PLfdtiltiRHWF5Rhuk7k4UAU1_yLAZzhWc&t=839
     //array of arrays (rules for fields)
+    //TODO consider refactoring to further decouple validate class (using objects
+    //TODO instead of arrays?)
+    //These are all rules needed for this application, but can add other rules
     $validation = $validate->check($_POST, array(
       'username' => array( //fieldname - may not want to reveal fieldnames in database
         'required'=> true,
@@ -32,7 +35,11 @@
     if($validation->passed()){
       echo 'Passed';
     } else{
-      print_r($validation->errors());
+      //print_r($validation->errors()); //debug
+      //TODO formate error messages better
+      foreach($validation->errors() as $error){
+        echo $error, '<br>';
+      }
     }
 
   }
@@ -42,7 +49,7 @@
 
   <div class = "field"
     <label for "username">Username</label> <!--applies to id username-->
-    <input type = "text" name = "username" id = "username" value = "" autocomplete = "off">
+    <input type = "text" name = "username" id = "username" value = "<?php echo escape(Input::get('username')); ?>" autocomplete = "off">
   </div>
 
   <div class= "field">
@@ -57,7 +64,7 @@
 
   <div class = "field">
     <label for "name"> Enter your name</label>
-    <input type = "text" name = "name" id = "name">
+    <input type = "text" name = "name" value = "<?php echo escape(Input::get('name')); ?>" id = "name">
   </div>
 
   <input type = "submit" value = "Register">
